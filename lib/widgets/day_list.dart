@@ -11,26 +11,32 @@ class DayList extends StatefulWidget {
 }
 
 class _DayListState extends State<DayList> {
-  final DayController dayController = DayController();
+  final DaysController dayController = DaysController();
 
   @override
   Widget build(BuildContext context) {
-    if (dayController.days.isNotEmpty) {
-      return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: dayController.days.length,
-        itemBuilder: (context, index) => DayItem(
-          day: dayController.days.elementAt(index),
-        ),
-      );
-    } else {
-      return Card(
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          child: const Icon(Icons.date_range_rounded),
-        ),
-      );
-    }
+    return Container(
+      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      child: Column(
+        children: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+          dayController.days.isNotEmpty
+              ? ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: dayController.days.length,
+                  itemBuilder: (context, index) => DayItem(
+                    day: dayController.days.elementAt(index),
+                  ),
+                )
+              : Card(
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    child: const Icon(Icons.date_range_rounded),
+                  ),
+                ),
+        ],
+      ),
+    );
   }
 }

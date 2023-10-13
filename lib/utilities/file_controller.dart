@@ -26,6 +26,16 @@ class FileController {
 
     Uint8List newFile = Uint8List.fromList(jsonEncoder.convert(json).codeUnits);
 
-    file?.writeAsBytesSync(newFile);
+    if (file != null) {
+      file?.writeAsBytesSync(newFile);
+    } else {
+      String? path = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+
+      if (path != null) {
+        File json = File('$path\\notas.json');
+
+        json.writeAsBytesSync(newFile);
+      }
+    }
   }
 }

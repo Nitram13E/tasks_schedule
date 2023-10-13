@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks_schedule/utilities/day_controller.dart';
 
 class FileButtons extends StatefulWidget {
   const FileButtons({super.key});
@@ -8,16 +9,18 @@ class FileButtons extends StatefulWidget {
 }
 
 class _FileButtonsState extends State<FileButtons> {
+  DaysController daysController = DaysController();
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: () => daysController.loadFromFile(),
           icon: const Icon(Icons.folder),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () => daysController.saveFile(),
           icon: const Icon(Icons.save),
         ),
       ],
