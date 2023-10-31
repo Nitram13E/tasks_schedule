@@ -10,28 +10,35 @@ class Taskbar extends StatefulWidget {
 class _TaskbarState extends State<Taskbar> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Checkbox(
-          value: false,
-          onChanged: (value) {},
-        ),
-        //showTimePicker
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.timelapse_rounded),
-        ),
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxHeight: 30,
-            minHeight: 30,
-            maxWidth: 100,
-            minWidth: 50,
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          Checkbox(
+            value: false,
+            onChanged: (value) {},
           ),
-          child: const TextField(),
-        ),
-      ],
+          //showTimePicker
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.timelapse_rounded),
+          ),
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 40,
+              minHeight: 20,
+              maxWidth: 200,
+              minWidth: 50,
+            ),
+            child: const TextField(
+              decoration: InputDecoration(
+                labelText: "Issue",
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
-    ;
   }
 }

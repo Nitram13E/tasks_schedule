@@ -2,10 +2,10 @@ class Task {
   int id;
   String? name;
   String? description;
-  DateTime totalTime;
+  DateTime? totalTime;
   bool? loaded;
 
-  Task({required this.id, this.name, required this.totalTime, this.loaded}) {
+  Task({required this.id, this.name, this.totalTime, this.loaded}) {
     name = '';
     loaded = false;
   }

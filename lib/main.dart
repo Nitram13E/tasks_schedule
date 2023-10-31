@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_schedule/widgets/action_bar.dart';
-import 'package:tasks_schedule/widgets/day_bar.dart';
 import 'package:tasks_schedule/widgets/day_list.dart';
 import 'package:tasks_schedule/widgets/day_section.dart';
 
@@ -51,15 +50,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          DayList(),
           Expanded(
-            flex: 6,
+            flex: 0,
+            child: DayList(),
+          ),
+          Expanded(
             child: Column(
               children: [
                 ActionBar(),
-                //DaySection(),
+                DaySection(),
               ],
             ),
           )

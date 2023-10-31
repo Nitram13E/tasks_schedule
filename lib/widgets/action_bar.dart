@@ -22,7 +22,7 @@ class _ActionBarState extends State<ActionBar> {
             constraints: const BoxConstraints(
               maxHeight: 300,
               minHeight: 40,
-              maxWidth: 1000,
+              maxWidth: 500,
             ),
             hintText: 'Find',
             backgroundColor: const MaterialStatePropertyAll(Colors.black),

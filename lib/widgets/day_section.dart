@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_schedule/models/day.dart';
 import 'package:tasks_schedule/widgets/day_bar.dart';
 import 'package:tasks_schedule/widgets/task_list.dart';
-import 'package:tasks_schedule/widgets/task_tile.dart';
 
 class DaySection extends StatefulWidget {
   const DaySection({super.key});
