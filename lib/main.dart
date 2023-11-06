@@ -29,6 +29,11 @@ class TaskSchedule extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'OpenSans',
         dividerColor: Colors.transparent,
+        listTileTheme: const ListTileThemeData(
+          selectedColor: Colors.white,
+          selectedTileColor: Colors.black,
+          titleTextStyle: TextStyle(fontWeight: FontWeight.w500),
+        ),
       ),
       home: const MyHomePage(title: 'Task Schedule'),
       debugShowCheckedModeBanner: false,
@@ -58,13 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
             child: DayList(),
           ),
           Expanded(
-            child: Column(
-              children: [
-                ActionBar(),
-                DaySection(),
-              ],
-            ),
-          )
+            child: DaySection(),
+          ),
         ],
       ),
     );

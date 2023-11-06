@@ -9,18 +9,26 @@ class DayItem extends StatelessWidget {
 
   DayItem({super.key, required this.day});
 
+  void selectItem() => daysController.selectDay(day);
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 65,
       child: Card(
-        child: InkWell(
-          onTap: () => daysController.selectDay(day),
-          child: Center(
-            child: Text(
+        clipBehavior: Clip.antiAlias,
+        child: ValueListenableBuilder(
+          valueListenable: daysController.selectedDay,
+          builder: (context, selectedDay, child) => ListTile(
+            selected: day == selectedDay,
+            contentPadding: const EdgeInsets.all(8),
+            dense: true,
+            titleAlignment: ListTileTitleAlignment.center,
+            title: Text(
               formatDate(day.date, [dd, '/', mm]),
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              textAlign: TextAlign.center,
             ),
+            onTap: selectItem,
           ),
         ),
       ),

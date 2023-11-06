@@ -11,7 +11,6 @@ class TaskTile extends StatefulWidget {
 
 class _TaskTileState extends State<TaskTile> {
   final QuillController _quillController = QuillController.basic();
-  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
