@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks_schedule/utilities/day_controller.dart';
 
 class NavigationButtons extends StatefulWidget {
   const NavigationButtons({super.key});
@@ -8,16 +9,18 @@ class NavigationButtons extends StatefulWidget {
 }
 
 class _NavigationButtonsState extends State<NavigationButtons> {
+  DaysController daysController = DaysController();
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: () => daysController.goTopreviousDay(),
           icon: const Icon(Icons.keyboard_arrow_left_rounded),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () => daysController.goToNextDay(),
           icon: const Icon(Icons.keyboard_arrow_right_rounded),
         ),
       ],

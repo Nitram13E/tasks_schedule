@@ -13,6 +13,7 @@ class DaysController {
   final Map<DateTime, Day> _days = <DateTime, Day>{};
   FileController fileController = FileController();
   final ValueNotifier<Day?> selectedDay = ValueNotifier(null);
+  final List<Day> history = [];
 
   List<Day> get days => _days.values.toList();
 
@@ -23,7 +24,22 @@ class DaysController {
 
   void removeDay(Day day) => _days.remove(day.date);
 
-  void selectDay(Day day) => selectedDay.value = day;
+  void selectDay(Day day) {
+    selectedDay.value = day;
+    history.add(day);
+  }
+
+  void goTopreviousDay() {
+    int previousDayIndex = history.indexOf(selectedDay.value!) - 1;
+
+    if (previousDayIndex >= 0) selectedDay.value = history.elementAt(previousDayIndex);
+  }
+
+  void goToNextDay() {
+    int nextDayIndex = history.indexOf(selectedDay.value!) + 1;
+
+    if (nextDayIndex < history.length) selectedDay.value = history.elementAt(nextDayIndex);
+  }
 
   void loadFromFile() async {
     fileController.loadFile();

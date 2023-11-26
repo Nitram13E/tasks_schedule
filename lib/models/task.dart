@@ -1,12 +1,13 @@
 class Task {
-  int id;
+  final int id;
   String? name;
   String? description;
-  DateTime? totalTime;
+  late Duration totalTime;
   bool? loaded;
 
-  Task({required this.id, this.name, this.totalTime, this.loaded}) {
+  Task({required this.id, this.name, this.loaded}) {
     name = '';
+    totalTime = Duration.zero;
     loaded = false;
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_schedule/widgets/action_bar.dart';
 import 'package:tasks_schedule/widgets/day_list.dart';
 import 'package:tasks_schedule/widgets/day_section.dart';
 

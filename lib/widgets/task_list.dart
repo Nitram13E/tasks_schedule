@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_schedule/models/day.dart';
 import 'package:tasks_schedule/utilities/day_controller.dart';
 import 'package:tasks_schedule/widgets/no_data.dart';
 import 'package:tasks_schedule/widgets/task_tile.dart';
@@ -26,7 +25,7 @@ class _TaskListState extends State<TaskList> {
                   return ListView.builder(
                     shrinkWrap: true,
                     itemCount: tasks.length,
-                    itemBuilder: (context, index) => const TaskTile(),
+                    itemBuilder: (context, index) => TaskTile(task: tasks.elementAt(index)),
                   );
                 }
                 return const NoData(

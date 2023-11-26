@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:tasks_schedule/models/task.dart';
 
@@ -37,7 +38,7 @@ class Day {
     );
 
     return {
-      "date": date,
+      "date": formatDate(date, [dd, '/', mm, '/', yyyy]),
       "tasks": tasksJson,
     };
   }

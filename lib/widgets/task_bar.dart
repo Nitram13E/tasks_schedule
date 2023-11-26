@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tasks_schedule/models/task.dart';
 
 class Taskbar extends StatefulWidget {
-  const Taskbar({super.key});
+  final Task task;
+
+  const Taskbar({super.key, required this.task});
 
   @override
   State<Taskbar> createState() => _TaskbarState();
 }
 
 class _TaskbarState extends State<Taskbar> {
-  TextEditingController timeTextEditingController = TextEditingController();
+  TextEditingController hourTextEditingController = TextEditingController();
+  TextEditingController minuteTextEditingController = TextEditingController();
+
   TextEditingController issueTextEditingController = TextEditingController();
 
   @override
@@ -19,27 +24,54 @@ class _TaskbarState extends State<Taskbar> {
       child: Row(
         children: [
           Checkbox(
-            value: false,
-            onChanged: (value) {},
+            value: widget.task.loaded,
+            onChanged: (value) => setState(() => widget.task.loaded = value),
           ),
           ConstrainedBox(
             constraints: const BoxConstraints(
               maxHeight: 40,
               minHeight: 20,
-              maxWidth: 80,
+              maxWidth: 50,
               minWidth: 50,
             ),
             child: TextField(
               keyboardType: TextInputType.number,
-              controller: timeTextEditingController,
-              onChanged: (value) {
-                if (value.contains(' ')) {
-                  //TODO: Definir logica de formato
-                  //timeTextEditingController.text = value.replaceRange(RegExp(source), )
-                }
-              },
+              controller: hourTextEditingController,
+              onChanged: (hour) => widget.task.totalTime = Duration(
+                hours: int.parse(hourTextEditingController.text),
+                minutes: (widget.task.totalTime.inMinutes % 60),
+              ),
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(2),
+              ],
               decoration: const InputDecoration(
-                labelText: "Time",
+                labelText: "h",
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          const Text(' : '),
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 40,
+              minHeight: 20,
+              maxWidth: 50,
+              minWidth: 50,
+            ),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              controller: minuteTextEditingController,
+              onChanged: (minutes) => widget.task.totalTime = Duration(
+                hours: widget.task.totalTime.inHours,
+                minutes: int.parse(hourTextEditingController.text),
+              ),
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(2),
+              ],
+              decoration: const InputDecoration(
+                labelText: "m",
                 border: OutlineInputBorder(),
               ),
             ),
