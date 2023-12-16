@@ -17,7 +17,7 @@ class _DayBarState extends State<DayBar> {
 
   _addTask() {
     Day? selectedDay = daysController.selectedDay.value;
-    if (selectedDay != null) daysController.selectedDay.value?.addTask(id: selectedDay.tasks.value.length, task: Task(id: selectedDay.tasks.value.length));
+    if (selectedDay != null) daysController.selectedDay.value?.addTask(task: Task(id: selectedDay.tasks.value.length));
   }
 
   @override
