@@ -17,6 +17,7 @@ class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+      tilePadding: const EdgeInsets.only(left: 10, right: 10),
       title: Taskbar(task: widget.task),
       children: [
         QuillToolbar.basic(controller: _quillController),

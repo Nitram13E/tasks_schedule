@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:tasks_schedule/models/task.dart';
 
 class Day extends ChangeNotifier {
-  DateTime date;
+  final DateTime date;
+  final ValueNotifier<double> tasksTime = ValueNotifier(0);
+  final ValueNotifier<double> loadedTasksTime = ValueNotifier(0);
+  final ValueNotifier<int> loadedTasks = ValueNotifier(0);
+
   final ValueNotifier<LinkedHashMap<int, Task>> tasks = ValueNotifier(LinkedHashMap());
 
   Day({required this.date});
@@ -16,13 +20,22 @@ class Day extends ChangeNotifier {
     tasks.notifyListeners();
   }
 
-  void updateTask({required Task task}) {
-    tasks.value[task.id] = task;
+  void removeTask(Task task) {
+    tasksTime.value -= (tasks.value[task.id]!.totalTime.inMinutes / 60);
 
-    tasks.notifyListeners();
+    tasks.value.remove(task.id);
   }
 
-  void removeTask(Task task) => tasks.value.remove(task.id);
+  @override
+  String toString() {
+    String day = '$date';
+
+    for (Task task in tasks.value.values) {
+      day += '$task | ';
+    }
+
+    return day;
+  }
 
   Map<String, dynamic> toJson() {
     Map<int, dynamic> tasksJson = <int, dynamic>{};

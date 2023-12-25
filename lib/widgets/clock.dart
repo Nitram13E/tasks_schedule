@@ -42,22 +42,28 @@ class _ClockState extends State<Clock> {
           Card(
             child: SizedBox(
               height: 50,
-              width: 50,
+              width: 60,
               child: Center(
                 child: Text(
-                  widget.hours.toString(),
+                  widget.hours <= 9 ? widget.hours.toString().padLeft(2, '0') : widget.hours.toString(),
                 ),
               ),
             ),
           ),
-          const Text(':'),
+          const Text(
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+            ':',
+          ),
           Card(
             child: SizedBox(
               height: 50,
-              width: 50,
+              width: 60,
               child: Center(
                 child: Text(
-                  widget.minutes.toString(),
+                  widget.minutes <= 9 ? widget.minutes.toString().padLeft(2, '0') : widget.minutes.toString(),
                 ),
               ),
             ),

@@ -28,22 +28,34 @@ class _DayBarState extends State<DayBar> {
           ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InfoCard(
-                      text: 'Total: 8h',
-                      margin: 15,
-                    ),
-                    InfoCard(
-                      text: 'Cargado: 7h',
-                      margin: 15,
-                    ),
-                    InfoCard(
-                      text: '2/3',
-                      margin: 15,
-                    ),
-                  ],
+                ValueListenableBuilder(
+                  valueListenable: selectedDay.tasks,
+                  builder: (context, value, child) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ValueListenableBuilder(
+                        valueListenable: selectedDay.tasksTime,
+                        builder: (context, tasksTime, child) => InfoCard(
+                          text: 'Total: ${tasksTime.toStringAsFixed(2)}h',
+                          margin: 15,
+                        ),
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: selectedDay.loadedTasksTime,
+                        builder: (context, loadedTasksTime, child) => InfoCard(
+                          text: 'Cargado: ${loadedTasksTime.toStringAsFixed(2)}h',
+                          margin: 15,
+                        ),
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: selectedDay.loadedTasks,
+                        builder: (context, loadedTasks, child) => InfoCard(
+                          text: '$loadedTasks/${selectedDay.tasks.value.length}',
+                          margin: 15,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 IconButton(
                   onPressed: _addTask,
