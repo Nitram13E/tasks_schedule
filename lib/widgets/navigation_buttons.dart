@@ -16,11 +16,11 @@ class _NavigationButtonsState extends State<NavigationButtons> {
     return Row(
       children: [
         IconButton(
-          onPressed: () => daysController.goTopreviousDay(),
+          onPressed: () => daysController.days.isNotEmpty ? daysController.goTopreviousDay() : null,
           icon: const Icon(Icons.keyboard_arrow_left_rounded),
         ),
         IconButton(
-          onPressed: () => daysController.goToNextDay(),
+          onPressed: () => daysController.days.isNotEmpty ? daysController.goToNextDay() : null,
           icon: const Icon(Icons.keyboard_arrow_right_rounded),
         ),
       ],

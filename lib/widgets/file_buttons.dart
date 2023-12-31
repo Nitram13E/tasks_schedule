@@ -14,6 +14,7 @@ class _FileButtonsState extends State<FileButtons> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         IconButton(
           onPressed: () => daysController.loadFromFile(),

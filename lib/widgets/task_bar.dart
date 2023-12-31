@@ -34,55 +34,85 @@ class _TaskbarState extends State<Taskbar> {
   }
 
   void updateTaskTime({required int hours, required int minutes}) {
-    setState(() {
-      //Calculation of task time
-      if (widget.task.totalTime.inMinutes > 0) daysController.selectedDay.value!.tasksTime.value -= (widget.task.totalTime.inMinutes / 60);
-      daysController.selectedDay.value!.tasksTime.value += ((hours * 60) + minutes) / 60;
+    //Calculation of task time
+    if (widget.task.totalTime.inMinutes > 0) daysController.selectedDay.value!.tasksTime.value -= (widget.task.totalTime.inMinutes / 60);
+    daysController.selectedDay.value!.tasksTime.value += ((hours * 60) + minutes) / 60;
 
-      //Calculation in case that the task was already loaded
-      if (widget.task.loaded) {
-        daysController.selectedDay.value!.loadedTasksTime.value -= (widget.task.totalTime.inMinutes / 60);
-        daysController.selectedDay.value!.loadedTasksTime.value += ((hours * 60) + minutes) / 60;
-      }
+    //Calculation in case that the task was already loaded
+    if (widget.task.loaded) {
+      daysController.selectedDay.value!.loadedTasksTime.value -= (widget.task.totalTime.inMinutes / 60);
+      daysController.selectedDay.value!.loadedTasksTime.value += ((hours * 60) + minutes) / 60;
+    }
 
-      widget.task.setHours = hours;
-      widget.task.setMinutes = minutes;
-    });
+    widget.task.setHours = hours;
+    widget.task.setMinutes = minutes;
   }
 
   void updateTaskName(String name) => widget.task.name = nameTextEditingController.text;
+
+  void deleteTask() => daysController.selectedDay.value!.removeTask(widget.task);
+
+  void showDeleteConfirmation() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Delete Task'),
+          content: const Text('Are you sure you want to delete this task?'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                deleteTask();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Delete'),
+            ),
+            ElevatedButton(
+              onPressed: Navigator.of(context).pop,
+              child: const Text('Cancel'),
+            ),
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
     nameTextEditingController.text = widget.task.name;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Checkbox(
-          value: widget.task.loaded,
-          onChanged: (value) => updateTaskStatus(status: value!),
-        ),
-        Clock(
-          hours: widget.task.totalTime.inHours,
-          minutes: widget.task.minutes,
-          updateTaskTime: updateTaskTime,
-        ),
-        const Text(' - '),
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxHeight: 40,
-            minHeight: 20,
-            maxWidth: 200,
-            minWidth: 50,
-          ),
-          child: TextField(
-            controller: nameTextEditingController,
-            onChanged: (name) => updateTaskName(name),
-            decoration: const InputDecoration(
-              labelText: "Issue",
-              border: OutlineInputBorder(),
+        Row(
+          children: [
+            Checkbox(
+              value: widget.task.loaded,
+              onChanged: (value) => updateTaskStatus(status: value!),
             ),
-          ),
+            Clock(
+              hours: widget.task.totalTime.inHours,
+              minutes: widget.task.minutes,
+              updateTaskTime: updateTaskTime,
+            ),
+            const Text(' - '),
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxHeight: 40,
+                minHeight: 20,
+                maxWidth: 200,
+                minWidth: 50,
+              ),
+              child: TextField(
+                controller: nameTextEditingController,
+                onChanged: (name) => updateTaskName(name),
+                decoration: const InputDecoration(
+                  labelText: "Issue",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ],
+        ),
+        IconButton(
+          onPressed: showDeleteConfirmation,
+          icon: const Icon(Icons.delete),
         ),
       ],
     );

@@ -1,7 +1,9 @@
+import 'package:flutter_quill/flutter_quill.dart';
+
 class Task {
   final int id;
   String name = '';
-  String? description;
+  Delta? description;
   late Duration totalTime = Duration.zero;
   bool loaded = false;
 
@@ -23,13 +25,13 @@ class Task {
 
   @override
   String toString() {
-    return '$name: $description';
+    return description != null ? ' - $name: ${description!.first.value.replaceAll(RegExp(r'insert'), '')}' : '';
   }
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "description": description,
+        "description": description != null ? description!.toJson() : description,
         "totalTime": totalTime.toString(),
         "loaded": loaded,
       };

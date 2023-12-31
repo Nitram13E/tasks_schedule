@@ -23,7 +23,23 @@ class Day extends ChangeNotifier {
   void removeTask(Task task) {
     tasksTime.value -= (tasks.value[task.id]!.totalTime.inMinutes / 60);
 
+    if (task.loaded) {
+      loadedTasksTime.value -= (tasks.value[task.id]!.totalTime.inMinutes / 60);
+      loadedTasks.value--;
+    }
+
     tasks.value.remove(task.id);
+    tasks.notifyListeners();
+  }
+
+  String tasksToString() {
+    String result = '';
+
+    for (Task task in tasks.value.values) {
+      result += '$task';
+    }
+
+    return result;
   }
 
   @override

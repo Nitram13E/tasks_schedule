@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_schedule/widgets/file_buttons.dart';
 import 'package:tasks_schedule/widgets/navigation_buttons.dart';
-import 'package:tasks_schedule/widgets/search_bar.dart';
+import 'package:tasks_schedule/widgets/tasks_search_bar.dart';
 
 class ActionBar extends StatefulWidget {
   const ActionBar({super.key});
@@ -18,9 +18,16 @@ class _ActionBarState extends State<ActionBar> {
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          NavigationButtons(),
-          TaskSearchBar(),
-          FileButtons(),
+          Expanded(
+            child: NavigationButtons(),
+          ),
+          Expanded(
+            flex: 3,
+            child: TaskSearchBar(),
+          ),
+          Expanded(
+            child: FileButtons(),
+          ),
         ],
       ),
     );
