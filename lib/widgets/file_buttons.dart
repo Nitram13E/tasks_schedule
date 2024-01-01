@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_schedule/utilities/day_controller.dart';
+import 'package:tasks_schedule/utilities/file_controller.dart';
 
 class FileButtons extends StatefulWidget {
   const FileButtons({super.key});
@@ -9,7 +9,7 @@ class FileButtons extends StatefulWidget {
 }
 
 class _FileButtonsState extends State<FileButtons> {
-  DaysController daysController = DaysController();
+  FileController fileController = FileController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,11 @@ class _FileButtonsState extends State<FileButtons> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         IconButton(
-          onPressed: () => daysController.loadFromFile(),
+          onPressed: fileController.loadFile,
           icon: const Icon(Icons.folder),
         ),
         IconButton(
-          onPressed: () => daysController.saveFile(),
+          onPressed: fileController.writeFile,
           icon: const Icon(Icons.save),
         ),
       ],

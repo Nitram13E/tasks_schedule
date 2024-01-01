@@ -102,6 +102,7 @@ class _TaskbarState extends State<Taskbar> {
               child: TextField(
                 controller: nameTextEditingController,
                 onChanged: (name) => updateTaskName(name),
+                autofocus: true,
                 decoration: const InputDecoration(
                   labelText: "Issue",
                   border: OutlineInputBorder(),

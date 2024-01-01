@@ -37,27 +37,30 @@ class _DayListState extends State<DayList> {
             onPressed: _selectDate,
             icon: const Icon(Icons.add),
           ),
-          dayController.days.isNotEmpty
-              ? Flexible(
-                  fit: FlexFit.tight,
-                  child: SizedBox(
-                    width: 65,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: dayController.days.length,
-                      itemBuilder: (context, index) => DayItem(
-                        day: dayController.days.elementAt(index),
+          ValueListenableBuilder(
+            valueListenable: dayController.days,
+            builder: (context, days, child) => dayController.dayList.isNotEmpty
+                ? Flexible(
+                    fit: FlexFit.tight,
+                    child: SizedBox(
+                      width: 65,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: dayController.dayList.length,
+                        itemBuilder: (context, index) => DayItem(
+                          day: dayController.dayList.elementAt(index),
+                        ),
                       ),
                     ),
+                  )
+                : Card(
+                    child: Container(
+                      margin: const EdgeInsets.all(10),
+                      child: const Icon(Icons.date_range_rounded),
+                    ),
                   ),
-                )
-              : Card(
-                  child: Container(
-                    margin: const EdgeInsets.all(10),
-                    child: const Icon(Icons.date_range_rounded),
-                  ),
-                ),
+          )
         ],
       ),
     );

@@ -17,7 +17,7 @@ class _TaskSearchBarState extends State<TaskSearchBar> with ChangeNotifier {
   List<Day> searchInformation(String keywords) {
     final List<Day> searchResult = [];
 
-    for (Day day in daysController.days) {
+    for (Day day in daysController.dayList) {
       if (day.toString().toLowerCase().contains(keywords.toLowerCase())) searchResult.add(day);
     }
 

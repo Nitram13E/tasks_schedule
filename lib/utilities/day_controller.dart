@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:tasks_schedule/models/day.dart';
-import 'package:tasks_schedule/utilities/file_controller.dart';
 
 class DaysController {
   static final DaysController _instance = DaysController._internal();
@@ -10,19 +7,18 @@ class DaysController {
   DaysController._internal();
   factory DaysController() => _instance;
 
-  final Map<DateTime, Day> _days = <DateTime, Day>{};
-  FileController fileController = FileController();
+  final ValueNotifier<Map<DateTime, Day>> days = ValueNotifier(<DateTime, Day>{});
   final ValueNotifier<Day?> selectedDay = ValueNotifier(null);
   final List<Day> history = [];
 
-  List<Day> get days => _days.values.toList();
+  List<Day> get dayList => days.value.values.toList();
 
   void addDay(Day day) {
-    _days[day.date] = day;
+    days.value[day.date] = day;
     selectDay(day);
   }
 
-  void removeDay(Day day) => _days.remove(day.date);
+  void removeDay(Day day) => days.value.remove(day.date);
 
   void selectDay(Day day) {
     selectedDay.value = day;
@@ -41,20 +37,27 @@ class DaysController {
     if (nextDayIndex < history.length) selectedDay.value = history.elementAt(nextDayIndex);
   }
 
-  void loadFromFile() async {
-    fileController.loadFile();
-    String? fileContent = fileController.file?.readAsStringSync();
+  void loadfromJson({required Map<String, dynamic> json}) {
+    selectedDay.value = null;
+    history.clear();
 
-    if (fileContent != null) jsonDecode(fileContent);
+    Map<DateTime, Day> newDays = {};
+
+    for (Map<String, dynamic> dayJson in json['days']) {
+      newDays[DateTime.parse(dayJson["date"])] = Day.fromJson(json: dayJson);
+    }
+
+    days.value = newDays;
+    selectedDay.value = days.value.values.first;
   }
 
-  void saveFile() async {
-    Map<String, dynamic> fileJson = <String, dynamic>{};
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> daysJson = [];
 
-    _days.forEach(
-      (key, value) => fileJson[key.toString()] = value.toJson(),
-    );
+    for (Day day in dayList) {
+      daysJson.add(day.toJson());
+    }
 
-    fileController.writeJson(fileJson);
+    return {'days': daysJson};
   }
 }

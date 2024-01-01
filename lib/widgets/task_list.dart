@@ -24,8 +24,12 @@ class _TaskListState extends State<TaskList> {
                 if (tasks.isNotEmpty) {
                   return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: tasks.length,
-                    itemBuilder: (context, index) => TaskTile(task: tasks[index]!),
+                    itemCount: tasks.keys.length,
+                    itemBuilder: (context, index) {
+                      int key = tasks.keys.elementAt(index);
+
+                      return TaskTile(task: tasks[key]!);
+                    },
                   );
                 }
                 return const NoData(

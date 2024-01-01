@@ -17,7 +17,14 @@ class _DayBarState extends State<DayBar> {
 
   _addTask() {
     Day? selectedDay = daysController.selectedDay.value;
-    if (selectedDay != null) daysController.selectedDay.value?.addTask(task: Task(id: selectedDay.tasks.value.length));
+
+    if (selectedDay != null) {
+      int nextId = 0;
+
+      if (selectedDay.tasks.value.keys.isNotEmpty) nextId = selectedDay.tasks.value.keys.last + 1;
+
+      selectedDay.addTask(task: Task(id: nextId));
+    }
   }
 
   @override
@@ -43,14 +50,14 @@ class _DayBarState extends State<DayBar> {
                       ValueListenableBuilder(
                         valueListenable: selectedDay.loadedTasksTime,
                         builder: (context, loadedTasksTime, child) => InfoCard(
-                          text: 'Cargado: ${loadedTasksTime.toStringAsFixed(2)}h',
+                          text: 'Loaded time: ${loadedTasksTime.toStringAsFixed(2)}h',
                           margin: 15,
                         ),
                       ),
                       ValueListenableBuilder(
                         valueListenable: selectedDay.loadedTasks,
                         builder: (context, loadedTasks, child) => InfoCard(
-                          text: '$loadedTasks/${selectedDay.tasks.value.length}',
+                          text: 'Tasks loaded: $loadedTasks/${selectedDay.tasks.value.length}',
                           margin: 15,
                         ),
                       ),
