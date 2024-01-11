@@ -1,4 +1,4 @@
-# tasks_schedule
+# Tasks Schedule
 Esta aplicación de escritorio te permite llevar un registro de tus tareas diarias, divididas por días y tareas, marcando el tiempo que llevas en cada tarea y con la posibilidad de marcar las tareas que ya fueron cargadas en la plataforma de carga de horas. 
 
 ## Características:
