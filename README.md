@@ -4,7 +4,7 @@ Esta aplicación de escritorio te permite llevar un registro de tus tareas diari
 ## Características:
 
 * Registro de tareas diarias divididas por días y tareas
-* Código marcando el tiempo que llevas en cada tarea
+* Posibilidad de marcar el tiempo que llevas en cada tarea
 * Posibilidad de marcar las tareas que ya fueron cargadas en la plataforma de carga de horas
 * Exportación e importación de notas con formato JSON
 * Interfaz de usuario sencilla e intuitiva
