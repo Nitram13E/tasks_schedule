@@ -27,6 +27,29 @@ class _DayBarState extends State<DayBar> {
     }
   }
 
+  _deleteDay() => daysController.removeDay(daysController.selectedDay.value!);
+
+  void showDeleteConfirmation() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Delete Day'),
+          content: const Text('Are you sure you want to delete this day?'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                _deleteDay();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Delete'),
+            ),
+            ElevatedButton(
+              onPressed: Navigator.of(context).pop,
+              child: const Text('Cancel'),
+            ),
+          ],
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -40,6 +63,15 @@ class _DayBarState extends State<DayBar> {
                   builder: (context, value, child) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      Tooltip(
+                        message: 'Delete day',
+                        child: Card(
+                          child: IconButton(
+                            onPressed: showDeleteConfirmation,
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ),
+                      ),
                       ValueListenableBuilder(
                         valueListenable: selectedDay.tasksTime,
                         builder: (context, tasksTime, child) => InfoCard(
@@ -64,9 +96,14 @@ class _DayBarState extends State<DayBar> {
                     ],
                   ),
                 ),
-                IconButton(
-                  onPressed: _addTask,
-                  icon: const Icon(Icons.add),
+                Tooltip(
+                  message: 'Add task',
+                  child: Card(
+                    child: IconButton(
+                      onPressed: _addTask,
+                      icon: const Icon(Icons.add),
+                    ),
+                  ),
                 ),
               ],
             )

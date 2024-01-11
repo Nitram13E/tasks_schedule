@@ -50,7 +50,7 @@ class Task {
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "description": description ?? description!.toJson(),
+        "description": description != null ? description!.toJson() : description,
         "totalTime": totalTime.toString(),
         "loaded": loaded,
       };

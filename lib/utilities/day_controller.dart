@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_schedule/models/day.dart';
 
-class DaysController {
+class DaysController extends ChangeNotifier {
   static final DaysController _instance = DaysController._internal();
 
   DaysController._internal();
@@ -18,7 +18,13 @@ class DaysController {
     selectDay(day);
   }
 
-  void removeDay(Day day) => days.value.remove(day.date);
+  void removeDay(Day day) {
+    goTopreviousDay();
+    history.removeWhere((element) => element.date == day.date);
+
+    days.value.remove(day.date);
+    days.notifyListeners();
+  }
 
   void selectDay(Day day) {
     selectedDay.value = day;
@@ -48,7 +54,7 @@ class DaysController {
     }
 
     days.value = newDays;
-    selectedDay.value = days.value.values.first;
+    selectDay(days.value.values.first);
   }
 
   Map<String, dynamic> toJson() {

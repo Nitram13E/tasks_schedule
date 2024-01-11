@@ -25,7 +25,6 @@ class Day extends ChangeNotifier {
     for (Map<String, dynamic> taskJson in json["tasks"]) {
       tasks[taskJson["id"]] = Task.fromJson(taskJson);
     }
-
     return Day(
       date: DateTime.parse(json["date"]),
       tasksTime: json["tasks_time"],

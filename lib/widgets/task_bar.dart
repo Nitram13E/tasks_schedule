@@ -44,13 +44,15 @@ class _TaskbarState extends State<Taskbar> {
       daysController.selectedDay.value!.loadedTasksTime.value += ((hours * 60) + minutes) / 60;
     }
 
-    widget.task.setHours = hours;
-    widget.task.setMinutes = minutes;
+    setState(() {
+      widget.task.setHours = hours;
+      widget.task.setMinutes = minutes;
+    });
   }
 
   void updateTaskName(String name) => widget.task.name = nameTextEditingController.text;
 
-  void deleteTask() => daysController.selectedDay.value!.removeTask(widget.task);
+  void _deleteTask() => daysController.selectedDay.value!.removeTask(widget.task);
 
   void showDeleteConfirmation() => showDialog(
         context: context,
@@ -60,7 +62,7 @@ class _TaskbarState extends State<Taskbar> {
           actions: [
             ElevatedButton(
               onPressed: () {
-                deleteTask();
+                _deleteTask();
                 Navigator.of(context).pop();
               },
               child: const Text('Delete'),
@@ -82,9 +84,12 @@ class _TaskbarState extends State<Taskbar> {
       children: [
         Row(
           children: [
-            Checkbox(
-              value: widget.task.loaded,
-              onChanged: (value) => updateTaskStatus(status: value!),
+            Tooltip(
+              message: 'Mark as loaded',
+              child: Checkbox(
+                value: widget.task.loaded,
+                onChanged: (value) => updateTaskStatus(status: value!),
+              ),
             ),
             Clock(
               hours: widget.task.totalTime.inHours,
@@ -111,9 +116,14 @@ class _TaskbarState extends State<Taskbar> {
             ),
           ],
         ),
-        IconButton(
-          onPressed: showDeleteConfirmation,
-          icon: const Icon(Icons.delete),
+        Tooltip(
+          message: 'Delete task',
+          child: Card(
+            child: IconButton(
+              onPressed: showDeleteConfirmation,
+              icon: const Icon(Icons.delete),
+            ),
+          ),
         ),
       ],
     );

@@ -33,9 +33,12 @@ class _DayListState extends State<DayList> {
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       child: Column(
         children: [
-          IconButton(
-            onPressed: _selectDate,
-            icon: const Icon(Icons.add),
+          Tooltip(
+            message: 'Add day',
+            child: IconButton(
+              onPressed: _selectDate,
+              icon: const Icon(Icons.add),
+            ),
           ),
           ValueListenableBuilder(
             valueListenable: dayController.days,

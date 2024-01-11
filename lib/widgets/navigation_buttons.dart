@@ -15,13 +15,19 @@ class _NavigationButtonsState extends State<NavigationButtons> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(
-          onPressed: () => daysController.dayList.isNotEmpty ? daysController.goTopreviousDay() : null,
-          icon: const Icon(Icons.keyboard_arrow_left_rounded),
+        Tooltip(
+          message: 'Go back',
+          child: IconButton(
+            onPressed: () => daysController.dayList.isNotEmpty ? daysController.goTopreviousDay() : null,
+            icon: const Icon(Icons.keyboard_arrow_left_rounded),
+          ),
         ),
-        IconButton(
-          onPressed: () => daysController.dayList.isNotEmpty ? daysController.goToNextDay() : null,
-          icon: const Icon(Icons.keyboard_arrow_right_rounded),
+        Tooltip(
+          message: 'Go forward',
+          child: IconButton(
+            onPressed: () => daysController.dayList.isNotEmpty ? daysController.goToNextDay() : null,
+            icon: const Icon(Icons.keyboard_arrow_right_rounded),
+          ),
         ),
       ],
     );

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -23,16 +22,23 @@ class FileController {
 
     if (filePickerResult != null) file = File(filePickerResult.files.single.path!);
 
-    if (file != null) daysController.loadfromJson(json: jsonDecode(file!.readAsStringSync()));
+    if (file != null) {
+      file!
+          .readAsString()
+          .then((fileContent) => daysController.loadfromJson(json: jsonDecode(fileContent)))
+          .onError((error, stackTrace) => debugPrint(error.toString()));
+    }
   }
 
   void writeFile() async {
     JsonEncoder jsonEncoder = const JsonEncoder.withIndent("\t");
-
-    Uint8List newFile = Uint8List.fromList(jsonEncoder.convert(daysController).codeUnits);
+    String json = jsonEncoder.convert(daysController);
 
     if (file != null) {
-      file?.writeAsBytesSync(newFile);
+      IOSink ioSink = file!.openWrite(mode: FileMode.write, encoding: utf8);
+
+      ioSink.write(json);
+      ioSink.close();
     } else {
       String? path = await FilePicker.platform.saveFile(
         lockParentWindow: true,
@@ -43,9 +49,11 @@ class FileController {
       );
 
       if (path != null) {
-        File json = File(path);
+        File newFile = File(path);
+        IOSink ioSink = newFile.openWrite(mode: FileMode.write, encoding: utf8);
 
-        json.writeAsBytesSync(newFile);
+        ioSink.write(json);
+        ioSink.close();
       }
     }
   }

@@ -16,13 +16,19 @@ class _FileButtonsState extends State<FileButtons> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        IconButton(
-          onPressed: fileController.loadFile,
-          icon: const Icon(Icons.folder),
+        Tooltip(
+          message: 'Open file',
+          child: IconButton(
+            onPressed: fileController.loadFile,
+            icon: const Icon(Icons.folder),
+          ),
         ),
-        IconButton(
-          onPressed: fileController.writeFile,
-          icon: const Icon(Icons.save),
+        Tooltip(
+          message: 'Save file',
+          child: IconButton(
+            onPressed: fileController.writeFile,
+            icon: const Icon(Icons.save),
+          ),
         ),
       ],
     );

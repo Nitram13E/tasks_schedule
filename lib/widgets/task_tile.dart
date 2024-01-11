@@ -15,15 +15,11 @@ class _TaskTileState extends State<TaskTile> {
   final QuillController _quillController = QuillController.basic();
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     if (widget.task.description != null) _quillController.document = Document.fromDelta(widget.task.description!);
 
     _quillController.addListener(() => widget.task.description = _quillController.document.toDelta());
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return ExpansionTile(
       tilePadding: const EdgeInsets.only(left: 10, right: 10),
       title: Taskbar(task: widget.task),

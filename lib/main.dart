@@ -9,7 +9,7 @@ void main() async {
 
   await windowManager.ensureInitialized();
   await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
-  await windowManager.setMinimumSize(const Size(565, 400));
+  await windowManager.setMinimumSize(const Size(600, 400));
 
   runApp(const TaskSchedule());
 }
