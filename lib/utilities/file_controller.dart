@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:tasks_schedule/utilities/day_controller.dart';
 
 class FileController {
   static final FileController _instance = FileController._internal();
+  final DaysController daysController = DaysController();
   File? file;
 
   FileController._internal();
@@ -19,22 +21,39 @@ class FileController {
     );
 
     if (filePickerResult != null) file = File(filePickerResult.files.single.path!);
-  }
-
-  void writeJson(Map<dynamic, dynamic> json) async {
-    JsonEncoder jsonEncoder = const JsonEncoder.withIndent("\t");
-
-    Uint8List newFile = Uint8List.fromList(jsonEncoder.convert(json).codeUnits);
 
     if (file != null) {
-      file?.writeAsBytesSync(newFile);
+      file!
+          .readAsString()
+          .then((fileContent) => daysController.loadfromJson(json: jsonDecode(fileContent)))
+          .onError((error, stackTrace) => debugPrint(error.toString()));
+    }
+  }
+
+  void writeFile() async {
+    JsonEncoder jsonEncoder = const JsonEncoder.withIndent("\t");
+    String json = jsonEncoder.convert(daysController);
+
+    if (file != null) {
+      IOSink ioSink = file!.openWrite(mode: FileMode.write, encoding: utf8);
+
+      ioSink.write(json);
+      ioSink.close();
     } else {
-      String? path = await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+      String? path = await FilePicker.platform.saveFile(
+        lockParentWindow: true,
+        dialogTitle: 'Save notes',
+        fileName: 'Notes.schedule',
+        type: FileType.custom,
+        allowedExtensions: ['schedule'],
+      );
 
       if (path != null) {
-        File json = File('$path\\notas.json');
+        File newFile = File(path);
+        IOSink ioSink = newFile.openWrite(mode: FileMode.write, encoding: utf8);
 
-        json.writeAsBytesSync(newFile);
+        ioSink.write(json);
+        ioSink.close();
       }
     }
   }

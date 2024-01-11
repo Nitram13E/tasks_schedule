@@ -1,37 +1,69 @@
-import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:tasks_schedule/models/day.dart';
-import 'package:tasks_schedule/utilities/file_controller.dart';
 
-class DaysController {
+class DaysController extends ChangeNotifier {
   static final DaysController _instance = DaysController._internal();
-  final Map<DateTime, Day> _days = <DateTime, Day>{};
-  FileController fileController = FileController();
 
   DaysController._internal();
-
   factory DaysController() => _instance;
 
-  List<Day> get days => _days.values.toList();
+  final ValueNotifier<Map<DateTime, Day>> days = ValueNotifier(<DateTime, Day>{});
+  final ValueNotifier<Day?> selectedDay = ValueNotifier(null);
+  final List<Day> history = [];
 
-  void addDay(Day day) => _days[day.date] = day;
+  List<Day> get dayList => days.value.values.toList();
 
-  void removeDay(Day day) => _days.remove(day.date);
-
-  void loadFromFile() async {
-    fileController.loadFile();
-    String? fileContent = fileController.file?.readAsStringSync();
-
-    if (fileContent != null) jsonDecode(fileContent);
+  void addDay(Day day) {
+    days.value[day.date] = day;
+    selectDay(day);
   }
 
-  void saveFile() async {
-    Map<String, dynamic> fileJson = <String, dynamic>{};
+  void removeDay(Day day) {
+    goTopreviousDay();
+    history.removeWhere((element) => element.date == day.date);
 
-    _days.forEach(
-      (key, value) => fileJson[key.toString()] = value.toJson(),
-    );
+    days.value.remove(day.date);
+    days.notifyListeners();
+  }
 
-    fileController.writeJson(fileJson);
+  void selectDay(Day day) {
+    selectedDay.value = day;
+    history.add(day);
+  }
+
+  void goTopreviousDay() {
+    int previousDayIndex = history.indexOf(selectedDay.value!) - 1;
+
+    if (previousDayIndex >= 0) selectedDay.value = history.elementAt(previousDayIndex);
+  }
+
+  void goToNextDay() {
+    int nextDayIndex = history.indexOf(selectedDay.value!) + 1;
+
+    if (nextDayIndex < history.length) selectedDay.value = history.elementAt(nextDayIndex);
+  }
+
+  void loadfromJson({required Map<String, dynamic> json}) {
+    selectedDay.value = null;
+    history.clear();
+
+    Map<DateTime, Day> newDays = {};
+
+    for (Map<String, dynamic> dayJson in json['days']) {
+      newDays[DateTime.parse(dayJson["date"])] = Day.fromJson(json: dayJson);
+    }
+
+    days.value = newDays;
+    selectDay(days.value.values.first);
+  }
+
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> daysJson = [];
+
+    for (Day day in dayList) {
+      daysJson.add(day.toJson());
+    }
+
+    return {'days': daysJson};
   }
 }

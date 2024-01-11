@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_schedule/widgets/action_bar.dart';
-import 'package:tasks_schedule/widgets/day_bar.dart';
 import 'package:tasks_schedule/widgets/day_list.dart';
 import 'package:tasks_schedule/widgets/day_section.dart';
+import 'package:tasks_schedule/widgets/title_bar.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await windowManager.ensureInitialized();
+  await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+  await windowManager.setMinimumSize(const Size(600, 400));
+
   runApp(const TaskSchedule());
 }
 
@@ -30,6 +36,11 @@ class TaskSchedule extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'OpenSans',
         dividerColor: Colors.transparent,
+        listTileTheme: const ListTileThemeData(
+          selectedColor: Colors.white,
+          selectedTileColor: Colors.black,
+          titleTextStyle: TextStyle(fontWeight: FontWeight.w500),
+        ),
       ),
       home: const MyHomePage(title: 'Task Schedule'),
       debugShowCheckedModeBanner: false,
@@ -49,20 +60,22 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(30),
+        child: TitleBar(title: widget.title),
+      ),
+      body: const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          DayList(),
           Expanded(
-            flex: 6,
-            child: Column(
-              children: [
-                ActionBar(),
-                //DaySection(),
-              ],
-            ),
-          )
+            flex: 0,
+            child: DayList(),
+          ),
+          Expanded(
+            child: DaySection(),
+          ),
         ],
       ),
     );
